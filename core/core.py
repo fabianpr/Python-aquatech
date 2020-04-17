@@ -1,8 +1,20 @@
 from log import log
 from sensors import *
+from nanpy import (ArduinoApi, SerialManager)
+from time import sleep
+
+ledPin = 13
+ledState = False
 
 
 class core():
+    try:
+        connection = SerialManager(device='/dev/ttyACM0')
+        ard = ArduinoApi(connection = connection)
+    except:
+        print("Fallo en Conexion Arduino")
+
+
     def fill_refugim(self):
         try:
             while refugim_water_level is False:
@@ -25,7 +37,7 @@ class core():
             pump_rele.sleep_proc()
         elif clean_cycle.dump():
             pump_rele.clean()
-        elif clean_cycle.fill()
+        elif clean_cycle.fill():
             pump_rele.fill()
         else:
             pass
@@ -35,3 +47,38 @@ class core():
             uv_rele.active()
         else:
             uv_rele.deactivate()
+
+    def feeding_cycle(self):
+        if day_cycle.activated():
+            pump_rele.stop()
+        else:
+            wave_maker()
+
+class night_cycle():
+    active = 0
+    def activated(self):
+        active = 1
+        return True
+
+    def deactivate():
+        active = 0
+        return True
+
+    def check_time():
+        return
+
+class day_cycle():
+    active = 0
+    def activate(self):
+        active = 1
+        check_time()
+        return True
+
+    def deactivate():
+        active = 0
+        check_time()
+        return True
+
+    def check_time():
+        return
+
