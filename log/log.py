@@ -3,7 +3,7 @@
 
 import sys
 from time import gmtime, strftime
-import cvs
+import csv
 
 def evento(linea=""):
     try:
