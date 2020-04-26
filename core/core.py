@@ -1,16 +1,25 @@
-from log import log
+from log.log import *
 from sensors import *
-from nanpy import (ArduinoApi, SerialManager)
+from nanpy import (ArduinoApi, SerialManager, Lcd)
 from time import sleep
+#from display.display import *
 
 ledPin = 13
 ledState = False
-
+pins = [7, 8, 9, 10, 11, 12]
+cols, rows = 16, 2
+lcd = Lcd(pins, [cols, rows])
 
 class core():
     try:
         connection = SerialManager(device='/dev/ttyACM0')
         ard = ArduinoApi(connection = connection)
+        lcd.setCursor(0,0)
+        lcd.printString('Conectado')
+        ard.digitalWrite(ledPin, ard.LOW)
+        ard.sleep(1)
+        ard.digitalWrite(ledPin, ard.HIGH)
+        ard.sleep(1)
     except:
         print("Fallo en Conexion Arduino")
 
@@ -20,7 +29,7 @@ class core():
             while refugim_water_level is False:
                 valve.open()
         except Exception as e:
-            log.error("Error en sensor proceso para llenar a nivel el almacer de agua.")
+            log.error("Error en sensor proceso para llenar a nivel el almacen de agua.")
             print(e)
 
     def wave_maker(self):
