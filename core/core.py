@@ -2,7 +2,10 @@ from log.log import *
 from sensors import *
 from nanpy import (ArduinoApi, SerialManager, Lcd)
 from time import sleep
-from display.display import *
+
+sys.path.append(".")
+from display import *
+from display import Lcd_display
 
 ledPin = 13
 ledState = False
@@ -15,9 +18,9 @@ class core():
         connection = SerialManager(device='/dev/ttyACM0')
         ard = ArduinoApi(connection = connection)
         lcd.setCursor(0,0)
-        write_lcd(connection,"Conectado Ard:Pi")
+        Lcd_display.write_lcd(connection,"Conectado Ard:Pi")
     except:
-        write_lcd(connection,"Err Conn Arduino")
+        Lcd_display.write_lcd(connection,"Err Conn Arduino")
         #TODO: FLAG TO RESTART /SEARCH ARDUINO
 
 
