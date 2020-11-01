@@ -22,6 +22,9 @@ class core():
     except:
         Lcd_display.write_lcd(connection,"Err Conn Arduino")
         #TODO: FLAG TO RESTART /SEARCH ARDUINO
+    water_pump = sensors.Control()
+    uv_light = sensors.Control()
+    heater = sensors.Control()
 
 
     def fill_refugim(self):

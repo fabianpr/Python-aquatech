@@ -2,8 +2,10 @@ try:
     import time
     import os
     import sys
+    import RPi.GPIO as GPIO
 except Exception as e:
     print("Error in Python modules, maybe missing: {}".format(e))
+
 
 
 class Light:
@@ -23,20 +25,28 @@ class Refugim_water_level:
         return self._pin
 
     @pin.setter
-    def set_pin(self, pin):
-        if pin in self.pins_io:
-            self._pin = pin
+    def pin(self, value):
+        if value in self._pins_io:
+            self._pin = value
+            GPIO.setup(self._pin, GPIO.IN)
+            GPIO.output(self._pin, GPIO.LOW)
+            self._ard.pinMode(self._pin, self._ard.OUTPUT)
+            self._ard.digitalWrite(self._pin, self._ard.LOW)
+        else:
+            raise ValueError(f'Selected pin {value} for {self.__class__.__name__} control is not correct')
 
     #TODO: metodo checar sensor
     def check_sensor(self, pin):
         self.is_full = Check_sensor(self._pin)
 
 
-class WaterPump:
-    def __init__(self, is_active, pins_io):
+class Control:
+    def __init__(self, is_active, pins_io, arduino):
         self._is_active = is_active
         self._pins_io = pins_io
         self._pin = None
+        self._ard = arduino
+        GPIO.setmode(GPIO.BCM)
 
     @property
     def pin(self):
@@ -46,16 +56,23 @@ class WaterPump:
     def pin(self, value):
         if value in self._pins_io:
             self._pin = value
+            GPIO.setup(self._pin, GPIO.OUT)
+            GPIO.output(self._pin, GPIO.LOW)
+            self._ard.pinMode(self._pin, self._ard.OUTPUT)
+            self._ard.digitalWrite(self._pin, self._ard.LOW)
         else:
-            raise ValueError(f'Selected pin {value} for the control is not correct')
+            raise ValueError(f'Selected pin {value} for {self.__class__.__name__} control is not correct')
 
     def activate_sw(self):
         if self._is_active is False:
             self._is_active = True
+            self._ard.digitalWrite(self._pin, self._ard.HIGH)
 
     def deactivate_sw(self):
         if self._is_active is True:
             self._is_active = False
+            self._ard.digitalWrite(self._pin, self._ard.LOW)
+
 
 class Check_sensor:
     def __init__(self, pin, state):
