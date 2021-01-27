@@ -37,7 +37,7 @@ class Refugim_water_level:
 
     #TODO: metodo checar sensor
     def check_sensor(self, pin):
-        self.is_full = Check_sensor(self._pin)
+        self.is_full = Check_Sensor(self._pin)
 
 
 class Control:
@@ -46,7 +46,7 @@ class Control:
         self._pins_io = pins_io
         self._pin = None
         self._ard = arduino
-        GPIO.setmode(GPIO.BCM)
+        #GPIO.setmode(GPIO.BCM)
 
     @property
     def pin(self):
@@ -74,7 +74,7 @@ class Control:
             self._ard.digitalWrite(self._pin, self._ard.LOW)
 
 
-class Check_sensor:
+class Check_Sensor:
     def __init__(self, pin, state):
         self.pin = pin
         self.state = state
