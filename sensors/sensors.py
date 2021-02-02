@@ -2,7 +2,7 @@ try:
     import time
     import os
     import sys
-    import RPi.GPIO as GPIO
+    #import RPi.GPIO as GPIO
 except Exception as e:
     print("Error in Python modules, maybe missing: {}".format(e))
 
@@ -28,8 +28,8 @@ class Refugim_water_level:
     def pin(self, value):
         if value in self._pins_io:
             self._pin = value
-            GPIO.setup(self._pin, GPIO.IN)
-            GPIO.output(self._pin, GPIO.LOW)
+            #GPIO.setup(self._pin, GPIO.IN)
+            #GPIO.output(self._pin, GPIO.LOW)
             self._ard.pinMode(self._pin, self._ard.OUTPUT)
             self._ard.digitalWrite(self._pin, self._ard.LOW)
         else:
@@ -56,8 +56,8 @@ class Control:
     def pin(self, value):
         if value in self._pins_io:
             self._pin = value
-            GPIO.setup(self._pin, GPIO.OUT)
-            GPIO.output(self._pin, GPIO.LOW)
+            #GPIO.setup(self._pin, GPIO.OUT)
+            #GPIO.output(self._pin, GPIO.LOW)
             self._ard.pinMode(self._pin, self._ard.OUTPUT)
             self._ard.digitalWrite(self._pin, self._ard.LOW)
         else:
